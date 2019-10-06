@@ -1,0 +1,12 @@
+body {
+  @apply bg-gray-200;
+}
+
+input {
+  transition: all 0.2s linear;
+  @apply bg-gray-200 rounded-lg px-3 py-2 border border-gray-200 border border-transparent;
+
+  &:focus {
+    @apply bg-white border-brand;
+  }
+}
