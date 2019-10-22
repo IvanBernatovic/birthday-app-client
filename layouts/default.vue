@@ -2,14 +2,18 @@
   <div>
     <nav class="bg-brand">
       <div
-        class="flex items-center justify-between flex-wrap p-6 container mx-auto"
+        class="flex items-center justify-between flex-wrap p-4 container mx-auto"
       >
-        <div class="flex items-center flex-shrink-0 text-white mr-6">
+        <nuxt-link
+          to="/"
+          class="flex items-center flex-shrink-0 text-white mr-6"
+        >
           <span class="font-semibold text-xl tracking-tight">Birthdays</span>
-        </div>
-        <div class="block lg:hidden">
+        </nuxt-link>
+        <div class="block md:hidden">
           <button
             class="flex items-center px-3 py-2 border rounded text-white border-white hover:text-white hover:border-white"
+            @click="toggleNav"
           >
             <svg
               class="fill-current h-3 w-3"
@@ -21,18 +25,21 @@
             </svg>
           </button>
         </div>
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <div class="text-sm lg:flex-grow">
+        <div
+          :class="open ? 'block' : 'hidden'"
+          class="w-full block flex-grow md:flex md:items-center md:w-auto"
+        >
+          <div class="text-sm md:flex-grow">
             <nuxt-link
               to="/"
-              class="block mt-4 lg:inline-block lg:mt-0 text-white mr-4"
+              class="block mt-4 md:inline-block md:mt-0 text-white mr-4"
             >
               Home
             </nuxt-link>
 
             <nuxt-link
               to="/birthdays/new"
-              class="block mt-4 lg:inline-block lg:mt-0 text-white mr-4"
+              class="block mt-4 md:inline-block md:mt-0 text-white mr-4"
             >
               Add birthday
             </nuxt-link>
@@ -40,15 +47,22 @@
           <div>
             <nuxt-link
               v-if="!$auth.loggedIn"
+              to="register"
+              class="block mt-4 md:inline-block md:mt-0 text-white hover:text-underline md:mr-3"
+            >
+              Register
+            </nuxt-link>
+            <nuxt-link
+              v-if="!$auth.loggedIn"
               to="login"
               href="#responsive-header"
-              class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-underline"
+              class="block mt-4 md:inline-block md:mt-0 text-white hover:text-underline"
             >
               Login
             </nuxt-link>
             <span
               v-if="$auth.loggedIn"
-              class="block mt-4 lg:inline-block lg:mt-0 text-white cursor-pointer"
+              class="block mt-4 md:inline-block md:mt-0 text-white cursor-pointer"
               @click="logout"
             >
               Logout
@@ -57,7 +71,7 @@
         </div>
       </div>
     </nav>
-    <div class="container mx-auto p-6">
+    <div class="container mx-auto p-3 lg:p-6">
       <nuxt />
     </div>
   </div>
@@ -65,9 +79,18 @@
 
 <script>
 export default {
+  data() {
+    return {
+      open: false
+    }
+  },
   methods: {
+    toggleNav() {
+      this.open = !this.open
+    },
     logout() {
       this.$auth.logout()
+      this.$router.push('/login')
     }
   }
 }

@@ -4,9 +4,13 @@ body {
 
 input {
   transition: all 0.2s linear;
-  @apply bg-gray-200 rounded-lg px-3 py-2 border border-gray-200 border border-transparent;
+  @apply bg-gray-200 rounded-lg px-3 py-2 border border-gray-200 border border-transparent mb-2;
 
   &:focus {
     @apply bg-white border-brand;
   }
+}
+
+.card {
+  @apply bg-white p-4 shadow-lg;
 }

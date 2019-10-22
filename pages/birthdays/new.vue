@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Add new birthday</h1>
+  <div class="card">
+    <h1 class="font-bold mb-2">Add new birthday</h1>
 
     <form @submit.prevent="submitBirthday">
       <input

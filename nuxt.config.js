@@ -1,4 +1,5 @@
 import pkg from './package'
+require('dotenv').config()
 
 export default {
   mode: 'universal',
@@ -7,7 +8,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: pkg.name,
+    title: 'Birthdays',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -34,7 +35,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv', '@nuxtjs/pwa'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv'],
 
   /*
    ** Axios module configuration
@@ -42,7 +43,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     // baseURL: process.env.BASE_API_URL,
-    baseURL: 'http://api.birthday-list.test/api'
+    baseURL: process.env.BASE_API_URL
   },
 
   auth: {

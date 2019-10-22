@@ -1,74 +1,97 @@
 <template>
   <div>
-    <div class="bg-white p-4 shadow-lg">
-      <h2 class="mb-2 font-bold text-lg">
-        Upcoming birthdays
-      </h2>
+    <div class="card">
+      <div v-show="birthdays.length">
+        <h2 class="mb-2 font-bold text-lg">
+          Upcoming birthdays
+        </h2>
 
-      <div
-        v-for="(birthdays, month) in sortedThisYearBirthdays"
-        :key="month"
-        class="mb-2"
-      >
-        <h1 class="font-bold mb-2 ">
-          {{ new Date(null, month - 1) | moment('MMMM') }}
-        </h1>
         <div
-          v-for="(birthday, index) in birthdays"
-          :key="index"
-          class="py-2 px-1 -m-1 cursor-pointer hover:bg-gray-300"
-          @click="editBirthday(birthday)"
+          v-for="(birthdays, month) in sortedThisYearBirthdays"
+          :key="month"
+          class="mb-2"
         >
-          <h1>
-            {{ birthday.date | moment('DD.MM.') }} - {{ birthday.name }}
-            <span class="font-thin text-gray-600"
-              >({{
-                birthday.date
-                  | moment(
-                    'from',
-                    new Date(birthday.date).setFullYear(now.getFullYear()),
-                    true
-                  )
-              }})</span
-            >
+          <h1 class="font-bold mb-2 ">
+            {{ new Date(null, month - 1) | moment('MMMM') }}
           </h1>
+          <Birthday
+            v-for="(birthday, index) in birthdays"
+            :key="index"
+            :birthday="birthday"
+            :now="now"
+            @click.native="editBirthday(birthday)"
+          ></Birthday>
+        </div>
+
+        <h2 class="font-black mb-2">{{ now.getFullYear() + 1 }}</h2>
+
+        <div
+          v-for="(birthdays, month) in sortedNextYearBirthdays"
+          :key="month"
+          class="mb-2"
+        >
+          <h1 class="font-bold mb-2">
+            {{ new Date(null, month - 1) | moment('MMMM') }}
+          </h1>
+          <Birthday
+            v-for="(birthday, index) in birthdays"
+            :key="index"
+            :birthday="birthday"
+            :now="nextYear"
+            @click.native="editBirthday(birthday)"
+          ></Birthday>
         </div>
       </div>
-
-      <h2 class="font-black mb-2">{{ now.getFullYear() + 1 }}</h2>
-
-      <div
-        v-for="(birthdays, month) in sortedNextYearBirthdays"
-        :key="month"
-        class="mb-4"
-      >
-        <h1 class="font-bold">
-          {{ new Date(null, month - 1) | moment('MMMM') }}
-        </h1>
-        <div v-for="(birthday, index) in birthdays" :key="index" class="mb-2">
-          <h1>
-            {{ birthday.date | moment('DD.MM.') }} - {{ birthday.name }}
-            <span class="font-thin text-gray-600"
-              >({{
-                birthday.date
-                  | moment(
-                    'from',
-                    new Date(birthday.date).setFullYear(now.getFullYear() + 1),
-                    true
-                  )
-              }})</span
-            >
-          </h1>
-        </div>
+      <div v-show="!birthdays.length">
+        <p>
+          You don't have any birthdays added, add them
+          <nuxt-link class="font-bold text-purple-900" to="/birthdays/new"
+            >here</nuxt-link
+          >
+        </p>
       </div>
     </div>
 
-    <birthday-modal :showing="modal" @close="modal = false"></birthday-modal>
+    <birthday-modal :showing="modal" @close="modal = false">
+      <div>
+        <h1 class="font-bold mb-2">Edit birthday</h1>
+
+        <form @submit.prevent="updateBirthday">
+          <input
+            id="name"
+            v-model="name"
+            name="name"
+            type="text"
+            placeholder="Name"
+          />
+          <flat-pickr
+            v-model="date"
+            name="date"
+            placeholder="Birth date"
+          ></flat-pickr>
+          <button
+            type="submit"
+            class="border border-brand rounded-full px-3 py-2 hover:bg-brand hover:text-white"
+          >
+            Update
+          </button>
+
+          <button
+            type="button"
+            class="mt-3 font-sm border rounded-full border-red-500 px-2 py-1 hover:bg-red-500 hover:text-white"
+            @click="deleteBirthday"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
+    </birthday-modal>
   </div>
 </template>
 
 <script>
 import BirthdayModal from '~/components/BirthdayModal'
+import Birthday from '~/components/Birthday'
 
 const groupBy = function(arr, criteria) {
   return arr.reduce(function(obj, item) {
@@ -76,7 +99,7 @@ const groupBy = function(arr, criteria) {
     const key = typeof criteria === 'function' ? criteria(item) : item[criteria]
 
     // If the key doesn't exist yet, create it
-    if (!obj.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
       obj[key] = []
     }
 
@@ -90,48 +113,109 @@ const groupBy = function(arr, criteria) {
 
 export default {
   components: {
-    BirthdayModal
+    BirthdayModal,
+    Birthday
   },
   data() {
+    const now = new Date()
+    const nextYear = new Date()
+    nextYear.setFullYear(now.getFullYear() + 1)
+
     return {
-      modal: false
+      modal: false,
+      birthday: null,
+      name: null,
+      date: null,
+      now,
+      nextYear
     }
   },
+  computed: {
+    sortedThisYearBirthdays() {
+      const _birthdays = groupBy(this.birthdays, item => {
+        return new Date(item.date).getMonth() + 1
+      })
+
+      const currentMonth = this.now.getMonth() + 1
+      const sortedThisYearBirthdays = {}
+      Object.keys(_birthdays)
+        .sort()
+        .forEach(function(key) {
+          if (currentMonth <= key)
+            sortedThisYearBirthdays[key] = _birthdays[key]
+        })
+
+      return sortedThisYearBirthdays
+    },
+    sortedNextYearBirthdays() {
+      const _birthdays = groupBy(this.birthdays, item => {
+        return new Date(item.date).getMonth() + 1
+      })
+
+      const currentMonth = this.now.getMonth() + 1
+      const sortedNextYearBirthdays = {}
+      Object.keys(_birthdays)
+        .sort()
+        .forEach(function(key) {
+          if (currentMonth > key) sortedNextYearBirthdays[key] = _birthdays[key]
+        })
+
+      return sortedNextYearBirthdays
+    }
+  },
+  watch: {},
   async asyncData({ $axios }) {
-    let { birthdays } = await $axios.$get('/birthdays')
-    birthdays = groupBy(birthdays, item => {
-      return new Date(item.date).getMonth() + 1
-    })
-
-    const now = new Date()
-    const currentMonth = now.getMonth() + 1
-
-    const sortedThisYearBirthdays = {}
-    Object.keys(birthdays)
-      .sort()
-      .forEach(function(key) {
-        if (currentMonth <= key) sortedThisYearBirthdays[key] = birthdays[key]
-      })
-
-    const sortedNextYearBirthdays = {}
-    Object.keys(birthdays)
-      .sort()
-      .forEach(function(key) {
-        if (currentMonth > key) sortedNextYearBirthdays[key] = birthdays[key]
-      })
+    const { birthdays } = await $axios.$get('/birthdays')
 
     return {
-      now,
-      sortedThisYearBirthdays,
-      sortedNextYearBirthdays
+      birthdays
     }
   },
   methods: {
     editBirthday(birthday) {
-      // eslint-disable-next-line no-console
-      console.log(birthday)
+      this.birthday = birthday
+      this.name = birthday.name
+      this.date = birthday.date
 
       this.modal = !this.modal
+    },
+    async updateBirthday() {
+      try {
+        const birthday = await this.$axios.$patch(
+          '/birthdays/' + this.birthday.id,
+          {
+            name: this.name,
+            date: this.date
+          }
+        )
+
+        this.birthdays.find((o, i) => {
+          if (o.id === birthday.id) {
+            this.birthdays.splice(i, 1, birthday)
+            return true // stop searching
+          }
+        })
+
+        this.modal = false
+      } catch (e) {
+        this.error = e.response.data.message
+      }
+    },
+    async deleteBirthday() {
+      try {
+        await this.$axios.$delete('/birthdays/' + this.birthday.id)
+
+        this.birthdays.find((o, i) => {
+          if (o.id === this.birthday.id) {
+            this.birthdays.splice(i, 1)
+            return true // stop searching
+          }
+        })
+
+        this.modal = false
+      } catch (e) {
+        this.error = e.response.data.message
+      }
     }
   }
 }
