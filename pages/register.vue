@@ -1,39 +1,42 @@
 <template>
-  <div class="flex justify-center items-center" style="height: 80vh">
+  <div class="md:w-2/3 xl:w-1/3 m-auto">
+    <div class="py-6 text-center">
+      <h1 class="text-3xl font-bold">Birthday app</h1>
+      <p class="mt-4 text-2xl font-bold">Sign up for new account</p>
+      <p class="mt-4 text-lg">Or sign in <nuxt-link class="hover:underline" to="/login">here</nuxt-link></p>
+    </div>
+
     <form
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      class="bg-white shadow-md rounded p-5 md:p-8 lg:p-10"
       @submit.prevent="register"
     >
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+        <label for="email">
           Name
         </label>
         <input
           id="name"
           v-model="name"
           name="name"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           placeholder="Name"
         />
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+        <label for="email">
           Email
         </label>
         <input
           id="email"
           v-model="email"
           name="email"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           placeholder="Email"
         />
       </div>
       <div class="mb-6">
         <label
-          class="block text-gray-700 text-sm font-bold mb-2"
           for="password"
         >
           Password
@@ -42,24 +45,18 @@
           id="password"
           v-model="password"
           name="password"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           placeholder="******************"
         />
       </div>
-      <div class="flex items-center justify-between">
+      <div>
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="btn btn-brand w-full"
           type="submit"
+          :disabled="loading || !name || !email || !password"
         >
           Register
         </button>
-        <a
-          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          href="#"
-        >
-          Forgot Password?
-        </a>
       </div>
     </form>
   </div>
@@ -67,35 +64,27 @@
 
 <script>
 export default {
+  layout: 'guest',
   auth: 'guest',
   name: 'RegisterPage',
   data() {
     return {
-      title: 'Register',
+      title: 'Sign Up',
       name: '',
       email: '',
-      password: ''
+      password: '',
+      loading: false
     }
-  },
-  mounted() {
-    // eslint-disable-next-line no-console
-    console.log(this.$auth.loggedIn)
   },
   head() {
     return {
-      title: this.title,
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'My custom description'
-        }
-      ]
+      title: this.title
     }
   },
   methods: {
     async register() {
+      this.loading = true
+
       try {
         await this.$axios.$post('/register', {
           name: this.name,
@@ -112,8 +101,11 @@ export default {
 
         this.$router.push('/')
       } catch (e) {
+        this.loading.false
         this.error = e.response.data.message
       }
+
+      this.loading = false
     }
   }
 }

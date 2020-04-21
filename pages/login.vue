@@ -1,51 +1,35 @@
 <template>
-  <div class="flex justify-center items-center" style="height: 85vh">
-    <form
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      @submit.prevent="login"
-    >
+  <div class="md:w-2/3 xl:w-1/3 m-auto">
+    <div class="py-6 text-center">
+      <h1 class="text-3xl font-bold">Birthday app</h1>
+      <p class="mt-4 text-2xl font-bold">Sign in to your account</p>
+      <p class="mt-4 text-lg">
+        Or sign up
+        <nuxt-link class="hover:underline" to="/register">here</nuxt-link>
+      </p>
+    </div>
+
+    <form class="bg-white shadow-md rounded p-5 md:p-8 lg:p-10" @submit.prevent="login">
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-          Email
-        </label>
-        <input
-          id="email"
-          v-model="email"
-          name="email"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text"
-          placeholder="Email"
-        />
+        <label for="email">Email</label>
+        <input id="email" v-model="email" name="email" type="text" placeholder="Email" />
       </div>
       <div class="mb-6">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="password"
-        >
-          Password
-        </label>
+        <label for="password">Password</label>
         <input
           id="password"
           v-model="password"
           name="password"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           placeholder="******************"
         />
       </div>
-      <div class="flex items-center justify-between">
+      <div>
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          :disabled="loading || !email || !password"
+          class="btn btn-brand w-full"
           type="submit"
-        >
-          Sign In
-        </button>
-        <a
-          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          href="#"
-        >
-          Forgot Password?
-        </a>
+        >Sign In</button>
       </div>
     </form>
   </div>
@@ -53,40 +37,42 @@
 
 <script>
 export default {
+  layout: 'guest',
   auth: 'guest',
   name: 'LoginPage',
   data() {
     return {
-      title: 'Login',
+      title: 'Sign In',
       email: '',
-      password: ''
+      password: '',
+      loading: false
     }
   },
   mounted() {},
   head() {
     return {
       title: this.title,
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'My custom description'
-        }
-      ]
     }
   },
   methods: {
     async login() {
       try {
-        await this.$auth.loginWith('local', {
-          data: {
-            email: this.email,
-            password: this.password
-          }
-        })
+        this.loading = true
 
-        this.$router.push('/')
+        try {
+          await this.$auth.loginWith('local', {
+            data: {
+              email: this.email,
+              password: this.password
+            }
+          }).then(() => {
+            this.$router.push('/')
+            this.loading = false
+          })
+        } catch (error) {
+        }
+
+        this.loading = false
       } catch (e) {
         this.error = e.response.data.message
       }

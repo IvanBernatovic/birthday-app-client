@@ -1,0 +1,111 @@
+/* purgecss start ignore */
+@import 'flatpickr/dist/flatpickr.css';
+/* purgecss end ignore */
+
+body {
+  @apply bg-gray-200;
+}
+
+label {
+  @apply block text-gray-700 text-sm font-bold mb-2;
+}
+
+input, select {
+  transition: background-color 0.2s linear;
+  @apply bg-gray-200 shadow-md rounded py-2 px-2 text-gray-700 w-full;
+  outline-color: #E8368F;
+
+  &:focus {
+    @apply bg-white;
+  }
+}
+
+@-moz-document url-prefix() {
+  input {
+    outline: none;
+
+    &:focus {
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: #E8368F;
+    }
+  }
+}
+
+select {
+  height: 42px;
+}
+
+
+.btn {
+  @apply font-bold py-2 px-4 rounded;
+
+  &:focus {
+    outline-color: #E8368F;
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.btn-sm {
+  @apply text-xs font-semibold p-1 rounded-sm;
+}
+
+.btn-brand {
+  @apply bg-brand-600 text-white;
+
+  &:hover {
+    @apply bg-brand-700;
+  }
+
+  &:disabled {
+    @apply bg-brand-200;
+  }
+}
+
+.btn-brand-outline {
+  @apply border border-brand-600 text-brand-600;
+
+  &:disabled {
+    @apply border-brand-200 text-brand-200;
+  }
+}
+
+/* purgecss start ignore */
+a {
+  @apply text-brand-600 font-semibold no-underline;
+}
+
+
+.vue-notification-group {
+  @apply fixed w-auto z-50;
+}
+
+.my-notification {
+  @apply px-4 py-3 bg-blue-600 shadow-md rounded-sm mr-4 mt-4 text-sm text-white border-l-8 border-blue-800 bg-blue-600;
+ 
+  &.warn {
+    background: #ffb648;
+    border-left-color: #f48a06;
+  }
+ 
+  &.error {
+    @apply bg-red-600 border-red-800;
+  }
+ 
+  &.success {
+    @apply bg-green-600 border-green-800;
+  }
+}
+/* purgecss end ignore */
+
+.card {
+  @apply bg-white p-4 shadow-lg;
+}
+
+.bg-semi-75 {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
