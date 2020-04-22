@@ -59,7 +59,13 @@ export default {
           logout: false
         }
       }
-    }
+    },
+    cookie: {
+      options: {
+        secure: process.env.APP_ENV == 'production',
+        maxAge: 30*24*60*60
+      },
+    },
   },
 
   router: {
