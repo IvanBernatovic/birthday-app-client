@@ -35,7 +35,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv', '@nuxtjs/pwa'],
 
   /*
    ** Axios module configuration
@@ -80,4 +80,17 @@ export default {
    ** Build configuration
    */
   build: {},
+
+  pwa: {
+    workbox: {
+      runtimeCaching: [
+        {
+          urlPattern: process.env.BASE_API_URL + '/.+',
+          handler: 'networkFirst',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
+        }
+      ]
+    }
+  }
 }

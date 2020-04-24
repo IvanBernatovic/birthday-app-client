@@ -224,7 +224,7 @@ export default {
     }
   },
   async fetch() {
-    return await this.$store.dispatch('birthdays/get', true)
+    await this.$store.dispatch('birthdays/get')
   },
   methods: {
     editBirthday(birthday) {
