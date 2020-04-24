@@ -1,22 +1,22 @@
-# birthday-list-client
+# Birthday App Client
 
-> My glorious Nuxt.js project
+> Proggressive web application for managing birthdays, gift list and reminders
+
+This is Nuxtjs app for managing birthdays, gift lists and reminders. It's a PWA which means it works really fast and has offline support.
+
+The app is deployed and can be used at https://birthdays.techyfingers.com
 
 ## Build Setup
-
 ``` bash
 # install dependencies
-$ npm install
+npm ci
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+npm run dev
 
 # build for production and launch server
-$ npm run build
-$ npm start
+npm run build
+npm start
 
 # generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+npm run generate
