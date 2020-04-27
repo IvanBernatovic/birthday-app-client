@@ -63,7 +63,7 @@ export default {
     cookie: {
       options: {
         secure: process.env.APP_ENV == 'production',
-        maxAge: 30*24*60*60
+        maxAge: 30 * 24 * 60 * 60
       },
     },
   },
@@ -82,6 +82,17 @@ export default {
   build: {},
 
   pwa: {
+    manifest: {
+      "name": "Birthday App",
+      "short_name": "Birthdays",
+      "description": "App for managingbBirthday reminders and gift lists",
+      "theme_color": "#bc0a6f",
+      "background_color": "#ffffff",
+      "display": "standalone",
+      "orientation": "portrait",
+      "scope": "/",
+      "start_url": "/"
+    },
     workbox: {
       runtimeCaching: [
         {
