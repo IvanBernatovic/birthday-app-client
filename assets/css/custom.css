@@ -10,7 +10,7 @@ label {
   @apply block text-gray-700 text-sm font-bold mb-2;
 }
 
-input[type=text], input[type=number], input[type=password], select {
+input, select {
   transition: background-color 0.2s linear;
   @apply bg-gray-200 shadow-md rounded py-2 px-2 text-gray-700 w-full;
   outline-color: #E8368F;
@@ -84,7 +84,7 @@ a {
 }
 
 .my-notification {
-  @apply px-4 py-3 bg-white shadow-md rounded mr-4 mt-4 text-sm border-l-8;
+  @apply px-4 py-3 bg-white rounded shadow-md mr-4 mt-4 text-sm border-l-8;
 
   & .notification-title {
     @apply font-semibold;

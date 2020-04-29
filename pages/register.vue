@@ -32,7 +32,7 @@
         </div>
 
         <div class="mb-5 flex items-center">
-          <input class="mr-2 leading-tight" type="checkbox" name="accept_terms" id="accept_terms" v-model="accept_terms" />
+          <input class="mr-2 leading-tight w-auto shadow-none border-0" type="checkbox" name="accept_terms" id="accept_terms" v-model="accept_terms" />
           <label for="accept_terms" class="text-normal m-0 font-normal">I accept the <a href="/terms" target="_blank">terms of service</a></label>
         </div>
 

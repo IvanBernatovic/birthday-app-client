@@ -16,7 +16,11 @@
           />
         </div>
 
-        <button :disabled="updateLoading || !name" type="submit" class="btn btn-brand w-full md:w-auto">Update</button>
+        <button
+          :disabled="updateLoading || !name"
+          type="submit"
+          class="btn btn-brand w-full md:w-auto"
+        >Update</button>
       </form>
 
       <div class="pt-6 pb-4">
@@ -46,7 +50,11 @@
           </div>
 
           <div class="mt-3">
-            <button :disabled="reminderLoading" class="btn btn-brand w-full lg:w-auto" @click="addReminder">Add reminder</button>
+            <button
+              :disabled="reminderLoading"
+              class="btn btn-brand w-full lg:w-auto"
+              @click="addReminder"
+            >Add reminder</button>
           </div>
 
           <div id="reminders" class="pt-2">
