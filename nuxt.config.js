@@ -35,7 +35,16 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv', '@nuxtjs/pwa'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth', '@nuxtjs/dotenv', '@nuxtjs/pwa', ['nuxt-fontawesome', {
+    component: 'fa',
+    imports: [
+      //import whole set
+      {
+        set: '@fortawesome/free-brands-svg-icons',
+        icons: ['faGoogle', 'faFacebookF']
+      },
+    ]
+  }]],
 
   /*
    ** Axios module configuration

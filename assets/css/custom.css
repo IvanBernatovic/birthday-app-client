@@ -10,7 +10,7 @@ label {
   @apply block text-gray-700 text-sm font-bold mb-2;
 }
 
-input, select {
+input[type=text], input[type=number], input[type=password], select {
   transition: background-color 0.2s linear;
   @apply bg-gray-200 shadow-md rounded py-2 px-2 text-gray-700 w-full;
   outline-color: #E8368F;
@@ -84,19 +84,18 @@ a {
 }
 
 .my-notification {
-  @apply px-4 py-3 bg-blue-600 shadow-md rounded-sm mr-4 mt-4 text-sm text-white border-l-8 border-blue-800 bg-blue-600;
- 
-  &.warn {
-    background: #ffb648;
-    border-left-color: #f48a06;
+  @apply px-4 py-3 bg-white shadow-md rounded mr-4 mt-4 text-sm border-l-8;
+
+  & .notification-title {
+    @apply font-semibold;
   }
- 
-  &.error {
-    @apply bg-red-600 border-red-800;
-  }
- 
+
   &.success {
-    @apply bg-green-600 border-green-800;
+    @apply border-green-500;
+  }
+
+  &.error {
+    @apply border-red-500;
   }
 }
 /* purgecss end ignore */

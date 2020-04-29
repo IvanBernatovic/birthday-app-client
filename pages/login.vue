@@ -9,37 +9,56 @@
       </p>
     </div>
 
-    <form class="bg-white shadow-md rounded p-5 md:p-8 lg:p-10" @submit.prevent="login">
-      <div class="mb-4">
-        <label for="email">Email</label>
-        <input id="email" v-model="email" name="email" type="text" placeholder="Email" />
-      </div>
-      <div class="mb-6">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          v-model="password"
-          name="password"
-          type="password"
-          placeholder="******************"
-        />
-      </div>
-      <div>
-        <button
-          :disabled="loading || !email || !password"
-          class="btn btn-brand w-full"
-          type="submit"
-        >Sign In</button>
-      </div>
-    </form>
+    <div class="bg-white shadow-md rounded p-5 md:p-8 lg:p-10">
+      <form @submit.prevent="login">
+        <div class="mb-4">
+          <label for="email">Email</label>
+          <input id="email" v-model="email" name="email" type="text" placeholder="Email" />
+        </div>
+        <div class="mb-6">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            v-model="password"
+            name="password"
+            type="password"
+            placeholder="******************"
+          />
+        </div>
+        <div>
+          <button
+            :disabled="loading || !email || !password"
+            class="btn btn-brand w-full"
+            type="submit"
+          >Sign In</button>
+        </div>
+      </form>
+
+      <SocialLogin />
+      <Links />
+    </div>
   </div>
 </template>
 
+<style>
+.line {
+  height: 1px;
+  position: relative;
+  top: 0.7rem;
+}
+</style>
+
 <script>
+import SocialLogin from '~/components/SocialLogin'
+import Links from '~/components/Links'
+
 export default {
   layout: 'guest',
   auth: 'guest',
   name: 'LoginPage',
+  components: {
+    SocialLogin, Links
+  },
   data() {
     return {
       title: 'Sign In',
@@ -48,33 +67,33 @@ export default {
       loading: false
     }
   },
-  mounted() {},
   head() {
     return {
-      title: this.title,
+      title: this.title
     }
   },
+
   methods: {
     async login() {
       try {
         this.loading = true
 
-        try {
-          await this.$auth.loginWith('local', {
+        await this.$auth
+          .loginWith('local', {
             data: {
               email: this.email,
               password: this.password
             }
-          }).then(() => {
+          })
+          .then(() => {
             this.$router.push('/')
             this.loading = false
           })
-        } catch (error) {
-        }
 
         this.loading = false
       } catch (e) {
         this.error = e.response.data.message
+        this.loading = false
       }
     }
   }
