@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="postcss" scoped>
 .social-btn {
   @apply border border-gray-600 text-gray-600 text-center mr-4 text-lg;
   transition: color 0.2s ease-out;
