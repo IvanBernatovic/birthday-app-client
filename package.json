@@ -22,7 +22,7 @@
     "cross-env": "^5.2.1",
     "flatpickr": "^4.6.3",
     "lodash": "^4.17.15",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.12.2",
     "nuxt-fontawesome": "^0.4.0",
     "sass-loader": "^7.3.1",
